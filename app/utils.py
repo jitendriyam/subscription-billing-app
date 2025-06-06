@@ -1,8 +1,12 @@
+import logging
 import random
 from datetime import date, datetime, timedelta
 
 from dateutil.relativedelta import relativedelta
 from passlib.context import CryptContext
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -27,26 +31,25 @@ def calculate_due_date(issue_date: date, days: int = 15) -> date:
 
 def mock_send_reminder_email(email: str, invoice_id: int, due_date: date):
     timestamp = datetime.now().isoformat()
-    print(f"[{timestamp}] 📧 [MOCK EMAIL SERVICE]")
-    print(f"  → To: {email}")
-    print(f"  → Subject: Payment Reminder - Invoice #{invoice_id}")
-    print(
-        f"  → Body: This is a friendly reminder that your invoice #{invoice_id} is due on {due_date}."
-    )
-    print("  ✔ Reminder email simulated successfully.\n")
+    logger.info(f"[{timestamp}] 📧 Sending mock reminder email")
+    logger.info(f"  → To: {email}")
+    logger.info(f"  → Subject: Payment Reminder - Invoice #{invoice_id}")
+    logger.info(f"  → Body: Invoice #{invoice_id} is due on {due_date}.")
+    logger.info("  ✔ Reminder email simulated successfully.")
 
 
 def mock_stripe_charge(user_id: int, invoice_id: int, amount: float) -> bool:
     timestamp = datetime.now().isoformat()
-    print(f"[{timestamp}] 💳 [MOCK STRIPE PAYMENT GATEWAY]")
-    print(f"  → Charging User ID: {user_id}")
-    print(f"  → Invoice ID: {invoice_id}")
-    print(f"  → Amount: ${amount:.2f}")
+    logger.info(f"[{timestamp}] 💳 Mock Stripe charge started")
+    logger.info(f"  → Charging User ID: {user_id}")
+    logger.info(f"  → Invoice ID: {invoice_id}")
+    logger.info(f"  → Amount: ${amount:.2f}")
 
-    # Simulate a 90% success rate
     success = random.random() < 0.9
     if success:
-        print("  ✔ Payment authorized and captured successfully.\n")
+        logger.info("  ✔ Payment authorized and captured successfully.")
     else:
-        print("  ❌ Payment failed due to mock insufficient funds or network error.\n")
+        logger.warning(
+            "  ❌ Payment failed due to mock insufficient funds or network error."
+        )
     return success
