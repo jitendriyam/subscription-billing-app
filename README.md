@@ -122,7 +122,7 @@ To design and build a foundational backend system capable of managing user subsc
     Interactive API documentation (Swagger UI) is at `http://120.0.0.1:8000/docs`.
     Alternative API documentation (ReDoc) is at `http://120.0.0.1:8000/redoc`.
 
-### Docker Setup (Optional)
+### Docker Setup 
 
 If you want to use `Dockerfile` :
 
